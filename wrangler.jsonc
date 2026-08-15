@@ -1,7 +1,12 @@
 {
   "name": "educafisica-avalia",
-"main": "worker_v2.js",
+  "main": "worker_v2.js",
   "compatibility_date": "2026-08-15",
+
+  "build": {
+    "command": "cp 'worker_v2.js.' worker_v2.js"
+  },
+
   "d1_databases": [
     {
       "binding": "DB",
