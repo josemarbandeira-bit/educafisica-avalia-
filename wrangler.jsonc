@@ -1,6 +1,9 @@
 {
   "name": "educafisica-avalia",
-  "main": "worker_v7.js",
+  SELECT id, name, active
+FROM schools
+WHERE active = 1
+ORDER BY name;
   "compatibility_date": "2026-08-15",
   "d1_databases": [
     {
