@@ -2,12 +2,10 @@
   "name": "educafisica-avalia",
   "main": "worker_v3.js",
   "compatibility_date": "2026-08-15",
-
-  "build": {
-  "command": "cp worker_v3.txt worker_v3.js"
+"build": {
+  "command": "cp worker_v4.txt worker_v4.js"
 },
-
-  "d1_databases": [
+ "d1_databases": [
     {
       "binding": "DB",
       "database_name": "educafisica-db",
