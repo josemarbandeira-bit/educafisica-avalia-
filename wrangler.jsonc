@@ -1,0 +1,12 @@
+{
+  "name": "educafisica-avalia",
+  "main": "worker.js",
+  "compatibility_date": "2026-08-15",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "educafisica-db",
+      "database_id": "3e52b7ae-1835-427a-9a24-d18612c09899"
+    }
+  ]
+}
