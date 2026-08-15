@@ -1,6 +1,6 @@
 {
   "name": "educafisica-avalia",
-"main": "worker_v15.js", 
+"main": "worker_v16.js",
   "compatibility_date": "2026-08-15",
   "d1_databases": [
     {
