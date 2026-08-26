@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AvaliaAtleta • Avaliação Individual</title>
+<style>
+:root{
+  --navy:#17365D; --blue:#2F75B5; --light:#EAF1F8; --bg:#F5F7FA;
+  --text:#263238; --muted:#6B7885; --white:#fff; --border:#D8E1EA;
+  --danger:#B42318; --warn:#B26A00; --ok:#3B6E22; --star:#1F4E78;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;padding:22px 16px}
+.header-inner{max-width:1180px;margin:auto}
+h1{margin:0;font-size:clamp(24px,4vw,36px)}
+header p{margin:6px 0 0;opacity:.9}
+main{max-width:1180px;margin:20px auto;padding:0 14px 60px}
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:0 5px 18px rgba(23,54,93,.06);margin-bottom:18px}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.field label{display:block;font-size:12px;font-weight:800;color:var(--navy);margin-bottom:6px}
+input,select,textarea{width:100%;border:1px solid #C9D4DF;border-radius:10px;padding:11px 12px;font:inherit;background:#fff}
+textarea{min-height:74px;resize:vertical}
+.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:12px}
+.section-title h2{margin:0;color:var(--navy);font-size:21px}
+.pillar{border-top:4px solid var(--blue)}
+.criterion{display:grid;grid-template-columns:1.2fr 1.8fr .9fr 1.2fr;gap:12px;padding:14px 0;border-top:1px solid #EDF1F5;align-items:start}
+.criterion:first-of-type{border-top:0}
+.criterion h3{margin:0 0 5px;font-size:15px}
+.desc{color:var(--muted);font-size:13px;line-height:1.4}
+.score-buttons{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.score{border:1px solid #B7C6D5;background:#fff;color:var(--navy);border-radius:9px;padding:10px 0;font-weight:900;cursor:pointer}
+.score:hover{background:var(--light)}
+.score.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+.auto{font-size:12px;line-height:1.4;padding:10px;border-radius:10px;background:#F6F8FB;min-height:58px}
+.auto strong{display:block;color:var(--navy);font-size:13px;margin-bottom:3px}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.kpi{border:1px solid var(--border);border-radius:14px;padding:14px;background:#FBFCFE;text-align:center}
+.kpi .label{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.kpi .value{font-size:25px;font-weight:900;color:var(--navy);margin-top:5px}
+.pillars-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+.pillar-result{padding:13px;border-radius:12px;background:var(--light);border:1px solid #CEDBE8}
+.pillar-result strong{color:var(--navy)}
+.progress{height:10px;background:#E7ECF1;border-radius:100px;overflow:hidden;margin-top:8px}
+.bar{height:100%;background:var(--blue);width:0;transition:.25s}
+.result-box{background:#FFFDF4;border:1px solid #F0E3A6;border-radius:14px;padding:16px;line-height:1.55}
+.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+button.primary,button.secondary,button.danger{border:0;border-radius:11px;padding:11px 16px;font-weight:800;cursor:pointer}
+.primary{background:var(--navy);color:#fff}
+.secondary{background:#E8EEF5;color:var(--navy)}
+.danger{background:#FBE9E7;color:var(--danger)}
+.status{font-size:13px;color:var(--muted)}
+.badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:12px;font-weight:800}
+.b1{background:#FCE8E6;color:#A61B12}.b2{background:#FFF0D3;color:#8A5600}.b3{background:#E7F2DE;color:#315B1D}.b4{background:#E2EBF5;color:#173F69}
+small.help{display:block;color:var(--muted);margin-top:5px}
+@media(max-width:900px){
+  .grid,.kpis,.pillars-grid{grid-template-columns:1fr 1fr}
+  .criterion{grid-template-columns:1fr}
+}
+@media(max-width:520px){
+  .grid,.kpis,.pillars-grid{grid-template-columns:1fr}
+  .card{padding:14px;border-radius:13px}
+  .score{padding:12px 0}
+}
+@media print{
+  header,.actions,.score-buttons,.status{display:none!important}
+  body{background:#fff}
+  .card{box-shadow:none;break-inside:avoid}
+  main{max-width:none;margin:0;padding:0}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <h1>AvaliaAtleta</h1>
+    <p>Avaliação Individual • Técnico • Tático • Físico-Motor • Psicológico/Comportamental</p>
+  </div>
+</header>
+
+<main>
+  <section class="card">
+    <div class="section-title"><h2>Identificação do atleta</h2><span class="status" id="saveStatus">Dados ainda não salvos</span></div>
+    <div class="grid">
+      <div class="field"><label>NOME DO ATLETA</label><input id="nome" placeholder="Nome completo"></div>
+      <div class="field"><label>CATEGORIA</label><input id="categoria" placeholder="Ex.: Sub-17"></div>
+      <div class="field"><label>DATA DE NASCIMENTO / IDADE</label><input id="nascimento" placeholder="Ex.: 15/04/2010 • 16 anos"></div>
+      <div class="field"><label>POSIÇÃO</label><input id="posicao" placeholder="Ex.: Zagueiro / Volante"></div>
+      <div class="field"><label>CICLO DE AVALIAÇÃO</label><input id="ciclo" placeholder="Ex.: 2º ciclo • 2026"></div>
+      <div class="field"><label>DATA DA AVALIAÇÃO</label><input id="data" type="date"></div>
+      <div class="field"><label>AVALIADOR</label><input id="avaliador" placeholder="Nome do treinador / avaliador"></div>
+      <div class="field"><label>EQUIPE / CLUBE</label><input id="equipe" placeholder="Equipe ou instituição"></div>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="section-title"><h2>Como preencher</h2></div>
+    <div class="grid">
+      <div><span class="badge b1">1 • Insuficiente</span><small class="help">Abaixo do padrão; intervenção prioritária.</small></div>
+      <div><span class="badge b2">2 • Em desenvolvimento</span><small class="help">Compreensão parcial; precisa ganhar consistência.</small></div>
+      <div><span class="badge b3">3 • Adequado</span><small class="help">Consistente e compatível com o ciclo/categoria.</small></div>
+      <div><span class="badge b4">4 • Destaque</span><small class="help">Autonomia e impacto acima da média.</small></div>
+    </div>
+  </section>
+
+  <div id="assessment"></div>
+
+  <section class="card">
+    <div class="section-title"><h2>Resultado automático</h2><span class="status" id="filled">0/20 critérios preenchidos</span></div>
+    <div class="kpis">
+      <div class="kpi"><div class="label">Média global</div><div class="value" id="media">—</div></div>
+      <div class="kpi"><div class="label">Desempenho</div><div class="value" id="percentual">—</div></div>
+      <div class="kpi"><div class="label">Classificação</div><div class="value" id="classificacao" style="font-size:18px">—</div></div>
+      <div class="kpi"><div class="label">Preenchimento</div><div class="value" id="preenchimento">0%</div></div>
+    </div>
+    <div class="pillars-grid" id="pillarResults"></div>
+  </section>
+
+  <section class="card">
+    <div class="section-title"><h2>Síntese automática</h2></div>
+    <div class="grid">
+      <div class="field" style="grid-column:span 2"><label>PRINCIPAL FORÇA</label><input id="forca" readonly></div>
+      <div class="field" style="grid-column:span 2"><label>PRINCIPAL PRIORIDADE</label><input id="prioridade" readonly></div>
+    </div>
+    <div style="margin-top:12px" class="field">
+      <label>SUGESTÃO DE PDI</label>
+      <textarea id="pdi"></textarea>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="section-title"><h2>Parecer final</h2></div>
+    <div class="result-box">
+      <textarea id="parecer" style="min-height:150px;background:transparent;border:0;padding:0"></textarea>
+    </div>
+    <div class="actions">
+      <button class="primary" onclick="salvar()">Salvar avaliação</button>
+      <button class="secondary" onclick="gerarParecer()">Atualizar parecer</button>
+      <button class="secondary" onclick="window.print()">Imprimir / Gerar PDF</button>
+      <button class="secondary" onclick="exportarJSON()">Exportar dados</button>
+      <button class="danger" onclick="novaAvaliacao()">Nova avaliação</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="section-title"><h2>Histórico neste aparelho</h2><span class="status">Protótipo V1</span></div>
+    <div id="history" class="status">Nenhuma avaliação salva ainda.</div>
+  </section>
+</main>
+
+<script>
+const pillars = [
+  {name:"Técnico", items:[
+    ["Primeiro Toque & Controle Orientado","Direcionamento corporal no domínio para fugir da pressão e preparar a ação sequencial."],
+    ["Passe (Curto, Médio e Ruptura)","Precisão, peso e velocidade da bola, com uso eficaz de ambas as pernas."],
+    ["Condução & Drible (1x1 Ofensivo)","Proteção sob contato, mudanças de ritmo/direção e desequilíbrio individual."],
+    ["Finalização & Arremate ao Gol","Precisão e tempo de execução no chute, cabeceio ofensivo e eficácia na área penal."],
+    ["Técnica Defensiva Específica","Temporização, abordagem corporal, desarme limpo, interceptação e duelo aéreo."]
+  ]},
+  {name:"Tático", items:[
+    ["Leitura de Jogo & Tomada de Decisão","Identificação rápida dos espaços livres, do homem livre e timing de acelerar/pausar."],
+    ["Posicionamento & Ocupação de Espaço","Cumprimento das funções táticas, sustentação de amplitude/profundidade e entrelinhas."],
+    ["Transição Defensiva (Perda-Pressiona)","Velocidade de reação à perda da posse, fechamento de ângulos e compactação em bloco."],
+    ["Transição Ofensiva (Recuperação)","Primeiro passe seguro e vertical inteligente ou manutenção para reestruturar ataque."],
+    ["Comunicação & Liderança Tática","Vocalização assertiva, orientação de coberturas defensivas e cooperação intersetorial."]
+  ]},
+  {name:"Físico-Motor", items:[
+    ["Velocidade & Aceleração","Arranque inicial explosivo (0-10m), velocidade máxima e tempo de reação motor."],
+    ["Agilidade & Mudança de Direção","Fluidez e equilíbrio dinâmico nas trocas rápidas de sentido com e sem bola."],
+    ["Força & Disputa de Duelos Corporais","Sustentação física no choque, equilíbrio em contato e proteção de bola."],
+    ["Resistência Específica de Jogo","Capacidade de sustentar volume e intensidade de ações intermitentes até o fim."],
+    ["Mobilidade & Coordenação Global","Qualidade biomecânica e motora em passadas, giros, saltos e aterrissagens."]
+  ]},
+  {name:"Psicológico & Comportamental", items:[
+    ["Competitividade & Nível de Esforço","Intensidade, entrega em treinos/jogos e superação em cenários adversos."],
+    ["Inteligência Emocional & Resiliência","Tolerância à frustração, reação construtiva ao erro e foco sob pressão/arbitragem."],
+    ["Receptividade ao Feedback (Coachability)","Capacidade de ouvir, processar e aplicar correções da comissão técnica."],
+    ["Disciplina & Conduta Institucional","Pontualidade, respeito às diretrizes do clube, colegas e comissão técnica."],
+    ["Espírito Coletivo & Cooperação","Subordinação de interesses individuais em prol dos objetivos coletivos da equipe."]
+  ]}
+];
+
+const state = {};
+function cls(v){ if(v<1.75)return "Insuficiente"; if(v<2.5)return "Em desenvolvimento"; if(v<3.25)return "Adequado"; return "Destaque"; }
+function orient(n){ return n===1?"Intervenção prioritária":n===2?"Desenvolver consistência":n===3?"Consolidar desempenho":"Ampliar desafios e autonomia"; }
+function render(){
+  let html="";
+  pillars.forEach((p,pi)=>{
+    html+=`<section class="card pillar"><div class="section-title"><h2>${pi+1}. Pilar ${p.name}</h2><span class="status" id="pstatus-${pi}">Sem notas</span></div>`;
+    p.items.forEach((it,ii)=>{
+      let k=`${pi}-${ii}`;
+      html+=`<div class="criterion">
+        <div><h3>${it[0]}</h3><div class="desc">${it[1]}</div></div>
+        <div><textarea id="obs-${k}" placeholder="Registre uma evidência objetiva observada no treino ou jogo..." oninput="touch()"></textarea></div>
+        <div><div class="score-buttons">${[1,2,3,4].map(n=>`<button class="score" id="s-${k}-${n}" onclick="setScore('${k}',${n})">${n}</button>`).join("")}</div></div>
+        <div class="auto" id="auto-${k}"><strong>Aguardando nota</strong>Selecione de 1 a 4.</div>
+      </div>`;
+    });
+    html+=`</section>`;
+  });
+  document.getElementById("assessment").innerHTML=html;
+}
+function setScore(k,n){
+  state[k]=n;
+  [1,2,3,4].forEach(x=>document.getElementById(`s-${k}-${x}`).classList.toggle("active",x===n));
+  const box=document.getElementById(`auto-${k}`);
+  box.innerHTML=`<strong>${n} • ${cls(n)}</strong>${orient(n)}`;
+  calcular(); touch();
+}
+function allItems(){
+  const arr=[];
+  pillars.forEach((p,pi)=>p.items.forEach((it,ii)=>arr.push({p:pi,k:`${pi}-${ii}`,name:it[0],desc:it[1],score:state[`${pi}-${ii}`]})));
+  return arr;
+}
+function calcular(){
+  const items=allItems(), scored=items.filter(x=>x.score);
+  const count=scored.length;
+  document.getElementById("filled").textContent=`${count}/20 critérios preenchidos`;
+  document.getElementById("preenchimento").textContent=`${Math.round(count/20*100)}%`;
+  let prHtml="";
+  pillars.forEach((p,pi)=>{
+    const vals=items.filter(x=>x.p===pi && x.score).map(x=>x.score);
+    const avg=vals.length?vals.reduce((a,b)=>a+b,0)/vals.length:null;
+    document.getElementById(`pstatus-${pi}`).textContent=avg?`${avg.toFixed(2)} • ${cls(avg)}`:"Sem notas";
+    prHtml+=`<div class="pillar-result"><strong>${p.name}</strong><div>${avg?avg.toFixed(2)+" • "+cls(avg):"—"}</div><div class="progress"><div class="bar" style="width:${avg?avg/4*100:0}%"></div></div></div>`;
+  });
+  document.getElementById("pillarResults").innerHTML=prHtml;
+  if(!count){
+    ["media","percentual","classificacao"].forEach(id=>document.getElementById(id).textContent="—");
+    document.getElementById("forca").value="";
+    document.getElementById("prioridade").value="";
+    document.getElementById("pdi").value="";
+    document.getElementById("parecer").value="Preencha as notas para gerar o parecer final.";
+    return;
+  }
+  const avg=scored.reduce((s,x)=>s+x.score,0)/count;
+  document.getElementById("media").textContent=avg.toFixed(2);
+  document.getElementById("percentual").textContent=Math.round(avg/4*100)+"%";
+  document.getElementById("classificacao").textContent=cls(avg);
+  const max=Math.max(...scored.map(x=>x.score)), min=Math.min(...scored.map(x=>x.score));
+  const forte=scored.find(x=>x.score===max), fraco=scored.find(x=>x.score===min);
+  document.getElementById("forca").value=forte?.name||"";
+  document.getElementById("prioridade").value=fraco?.name||"";
+  const low=[...scored].sort((a,b)=>a.score-b.score).slice(0,3).map(x=>x.name);
+  document.getElementById("pdi").value= low.length ? `Priorizar no próximo ciclo: ${low.join("; ")}. Definir tarefas específicas, evidências observáveis e reavaliação ao final do período.` : "";
+  gerarParecer(false);
+}
+function gerarParecer(force=true){
+  const items=allItems().filter(x=>x.score);
+  if(!items.length){document.getElementById("parecer").value="Preencha as notas para gerar o parecer final.";return}
+  const avg=items.reduce((s,x)=>s+x.score,0)/items.length;
+  const forte=document.getElementById("forca").value;
+  const prioridade=document.getElementById("prioridade").value;
+  let base="";
+  if(avg<1.75) base="O atleta apresenta desempenho global abaixo do padrão esperado neste ciclo. Recomenda-se PDI intensivo, com prioridades objetivas, acompanhamento frequente e reavaliação antes de qualquer progressão.";
+  else if(avg<2.5) base="O atleta está em desenvolvimento. Demonstra compreensão parcial, porém ainda apresenta oscilações em diferentes demandas do jogo. Recomenda-se PDI focado em consistência, repetição contextualizada e feedback baseado em evidências.";
+  else if(avg<3.25) base="O atleta apresenta desempenho adequado ao ciclo e mantém processo regular de maturação. Recomenda-se consolidar os pontos fortes, atuar nas prioridades identificadas e ampliar gradualmente a complexidade das tarefas.";
+  else base="O atleta apresenta desempenho de destaque no ciclo. Recomenda-se ampliar desafios, autonomia e responsabilidades, considerando progressão somente em conjunto com contexto de maturação, categoria e análise da comissão técnica.";
+  const nome=document.getElementById("nome").value.trim();
+  const intro=nome?`${nome} obteve média global de ${avg.toFixed(2)}/4 (${Math.round(avg/4*100)}%), classificação ${cls(avg)}. `:`Média global de ${avg.toFixed(2)}/4 (${Math.round(avg/4*100)}%), classificação ${cls(avg)}. `;
+  const txt=intro+base+` Principal força observada: ${forte}. Prioridade de desenvolvimento: ${prioridade}.`;
+  if(force || !document.getElementById("parecer").value || document.getElementById("parecer").value.includes("Preencha")) document.getElementById("parecer").value=txt;
+}
+function dataObj(){
+  const campos=["nome","categoria","nascimento","posicao","ciclo","data","avaliador","equipe","forca","prioridade","pdi","parecer"];
+  const obj={};campos.forEach(id=>obj[id]=document.getElementById(id).value);
+  obj.notas={...state}; obj.observacoes={};
+  allItems().forEach(x=>obj.observacoes[x.k]=document.getElementById(`obs-${x.k}`)?.value||"");
+  obj.salvoEm=new Date().toISOString();
+  return obj;
+}
+function salvar(){
+  const obj=dataObj();
+  const hist=JSON.parse(localStorage.getItem("avaliaatleta_hist")||"[]");
+  hist.unshift(obj);
+  localStorage.setItem("avaliaatleta_hist",JSON.stringify(hist.slice(0,30)));
+  document.getElementById("saveStatus").textContent="Avaliação salva neste aparelho";
+  renderHistory();
+}
+function renderHistory(){
+  const hist=JSON.parse(localStorage.getItem("avaliaatleta_hist")||"[]");
+  if(!hist.length){document.getElementById("history").textContent="Nenhuma avaliação salva ainda.";return}
+  document.getElementById("history").innerHTML=hist.slice(0,8).map((h,i)=>`<div style="padding:9px 0;border-top:1px solid #EDF1F5"><strong>${h.nome||"Atleta sem nome"}</strong> • ${h.categoria||"sem categoria"} • ${h.ciclo||"sem ciclo"} <span style="float:right">${new Date(h.salvoEm).toLocaleString("pt-BR")}</span></div>`).join("");
+}
+function exportarJSON(){
+  const blob=new Blob([JSON.stringify(dataObj(),null,2)],{type:"application/json"});
+  const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=(document.getElementById("nome").value||"avaliacao_atleta").replace(/\s+/g,"_")+".json";a.click();URL.revokeObjectURL(a.href);
+}
+function novaAvaliacao(){
+  if(!confirm("Limpar a avaliação atual? O histórico salvo continuará disponível."))return;
+  Object.keys(state).forEach(k=>delete state[k]);
+  document.querySelectorAll("input,textarea").forEach(el=>{ if(!el.readOnly) el.value=""; });
+  render(); calcular(); document.getElementById("saveStatus").textContent="Dados ainda não salvos";
+}
+function touch(){document.getElementById("saveStatus").textContent="Alterações ainda não salvas"}
+render(); calcular(); renderHistory();
+</script>
+</body>
+</html>
